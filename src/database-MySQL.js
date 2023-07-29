@@ -1,11 +1,11 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 
 //Configuración
 var mysqlConn = mysql.createConnection({
     host: 'localhost',
     database: 'pruebainfodesign',
     user: 'root',
-    password: ''
+    password: 'admin'
 });
 
 //Conexión
