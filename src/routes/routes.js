@@ -9,21 +9,27 @@ router.get('/', (req, res) => {
 });
 
 router.post('/tramos', async (req, res) => {
-    await historical.getHistTramos(req.body, (resp) =>{
+    await historical.getHistTramos(req.body, (resp) => {
         res.json(resp)
     });
 });
 
 router.post('/cliente', async (req, res) => {
-  await historical.getHistCliente(req.body, (resp) =>{
-      res.json(resp)
-  });
+    await historical.getHistCliente(req.body, (resp) => {
+        res.json(resp)
+    });
 });
 
 router.post('/tramos-cliente', async (req, res) => {
-  await historical.getTramosCliente(req.body, (resp) =>{
-      res.json(resp)
-  });
+    await historical.getTramosCliente(req.body, (resp) => {
+        res.json(resp)
+    });
+});
+
+router.post('/tramos-cliente-consumo', async (req, res) => {
+    await historical.getTramosClienteConsumo(req.body, (resp) => {
+        res.json(resp)
+    });
 });
 
 module.exports = router;
