@@ -56,7 +56,21 @@ module.exports = class historical {
 
   static getTramosCliente(data, callback) {
 
-    var consultaTramosCliente = `SELECT TipoConsumo, Linea, Perdidas FROM ( SELECT "Residencial" AS TipoConsumo, pt.Linea, pt.Residencial AS Perdidas FROM perdidas_tramo pt WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' UNION ALL SELECT "Comercial" AS TipoConsumo, pt.Linea, pt.Comercial AS Perdidas FROM perdidas_tramo pt WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' UNION ALL SELECT "Industrial" AS TipoConsumo, pt.Linea, pt.Industrial AS Perdidas FROM perdidas_tramo pt WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' ) AS combined_data ORDER BY TipoConsumo, Perdidas DESC LIMIT 20`;
+    var consultaTramosCliente = `SELECT TipoConsumo, Linea, Perdidas, Fecha
+    FROM ( SELECT "Residencial" AS TipoConsumo, pt.Linea, pt.Residencial AS Perdidas, pt.Fecha AS Fecha
+            FROM perdidas_tramo pt 
+            WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' 
+            UNION ALL SELECT "Comercial" AS TipoConsumo, pt.Linea, pt.Comercial AS Perdidas, pt.Fecha AS Fecha
+            FROM perdidas_tramo pt 
+            WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' 
+            UNION ALL SELECT "Industrial" AS TipoConsumo, pt.Linea, pt.Industrial AS Perdidas, pt.Fecha AS Fecha
+            FROM perdidas_tramo pt 
+            WHERE pt.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' ) 
+    AS combined_data 
+    ORDER BY TipoConsumo, Linea, Fecha, Perdidas DESC 
+    
+    `;
+    // LIMIT 20
 
     db.query(consultaTramosCliente, (err, resp) => {
       if (err) {
