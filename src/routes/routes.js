@@ -32,4 +32,10 @@ router.post('/tramos-cliente-consumo', async (req, res) => {
     });
 });
 
+router.post('/tramos-cliente-costos', async (req, res) => {
+    await historical.getTramosClienteCostos(req.body, (resp) => {
+        res.json(resp)
+    });
+});
+
 module.exports = router;

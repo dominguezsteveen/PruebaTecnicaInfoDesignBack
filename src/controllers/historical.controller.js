@@ -106,4 +106,30 @@ module.exports = class historical {
     });
   }
 
+  static getTramosClienteCostos(data, callback) {
+
+    var consultaTramosCliente = `SELECT TipoConsumo, Linea, Costos, Fecha
+    FROM ( SELECT "Residencial" AS TipoConsumo, ct.Linea, ct.Residencial AS Costos, ct.Fecha AS Fecha
+            FROM costos_tramo ct 
+            WHERE ct.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' 
+            UNION ALL SELECT "Comercial" AS TipoConsumo, ct.Linea, ct.Comercial AS Costos, ct.Fecha AS Fecha
+            FROM costos_tramo ct 
+            WHERE ct.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' 
+            UNION ALL SELECT "Industrial" AS TipoConsumo, ct.Linea, ct.Industrial AS Costos, ct.Fecha AS Fecha
+            FROM costos_tramo ct 
+            WHERE ct.Fecha BETWEEN '${data.fechainicial}' AND '${data.fechafinal}' ) 
+    AS combined_data 
+    ORDER BY TipoConsumo, Linea, Fecha, Costos DESC 
+    
+    `;
+    // LIMIT 20
+
+    db.query(consultaTramosCliente, (err, resp) => {
+      if (err) {
+        callback(err);
+      }
+      callback(resp);
+    });
+  }
+
 };
